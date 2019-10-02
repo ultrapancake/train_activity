@@ -56,17 +56,21 @@ $(document).ready(function () {
         console.log(snapV.trainTime);
         console.log(snapV.frequency);
 
+        trainTime = parseInt(snapV.trainTime)
+        frequency = parseInt(snapV.frequency)
+
         // math
-        var nextArrival;
-        var minutesAway;
+        var timeLeft = moment().diff(moment.unix(trainTime), "minutes") % frequency;
+        var minutesAway = frequency - timeLeft;
+        var nextArrival = moment().add(minutesAway, "m").format("hh:mm A");
 
         // Push to HTML
         var newRow = $('<tr>').append(
             $('<td>').text(snapV.trainName),
             $('<td>').text(snapV.destination),
             $('<td>').text(snapV.frequency),
-            $('<td>').text('nextArrival'),
-            $('<td>').text('minutesAway')
+            $('<td>').text(nextArrival),
+            $('<td>').text(minutesAway)
         );
 
         $('#train-input').prepend(newRow);
